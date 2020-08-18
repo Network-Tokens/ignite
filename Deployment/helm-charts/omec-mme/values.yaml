@@ -17,7 +17,7 @@ images:
   tags:
     init: docker.io/omecproject/pod-init:1.0.0
     mmeExporter: docker.io/omecproject/mme-exporter:0.3.1
-    mme: nucleus:2.0.0-dev
+    mme: nucleus:2.1.0-dev2
     depCheck: quay.io/stackanetes/kubernetes-entrypoint:v0.3.1
   pullPolicy: IfNotPresent
 
