@@ -120,6 +120,25 @@ try:
 
     time.sleep(2)
 
+    mme_ue_S1AP_id , mme_ue_S1AP_id_present = icu.getKeyValueFromDict(init_ctxt_setup_req, "MME-UE-S1AP-ID")
+    mob_ctxt_command = "export LD_LIBRARY_PATH=" + mme_lib_path + " && " + mme_grpc_client_path + "/mme-grpc-client mme-app show mobile-context "+str(mme_ue_S1AP_id)
+    mob_ctxt_af_attach = su.executeCommand(mob_ctxt_command,ssh_client)
+    icu.mobileContextValidation(str(imsi),mob_ctxt_af_attach)
+
+    proc_stat_af_attach = su.executeCommand(command,ssh_client)
+
+    ue_count_after_attach = int(do.splitProcStats(proc_stat_af_attach, stats_type["subs_attached"]))
+    icu.grpcValidation(ue_count_before_attach + 1, ue_count_after_attach, "Number of Subs Attached")
+
+    num_of_processed_aia_afattach = int(do.splitProcStats(proc_stat_af_attach, stats_type["processed_aia"]))
+    icu.grpcValidation(num_of_processed_aia + 1, num_of_processed_aia_afattach, "Number of Processed AIA")
+
+    num_of_processed_ula_afattach = int(do.splitProcStats(proc_stat_af_attach, stats_type["processed_ula"]))
+    icu.grpcValidation(num_of_processed_ula + 1, num_of_processed_ula_afattach, "Number of Processed ULA")
+
+    num_of_handled_esm_info_resp_afattach = int(do.splitProcStats(proc_stat_af_attach, stats_type["esm_info_resp"]))
+    icu.grpcValidation(num_of_handled_esm_info_resp + 1, num_of_handled_esm_info_resp_afattach,
+                       "Number of Handled ESM info response")
 
     igniteLogger.logger.info("\n---------------------------------------\neNB sends UE Context Release Request to MME\n---------------------------------------")
     s1.sendS1ap('uecontextrelease_request', uecontextrelease_request, enbues1ap_id)

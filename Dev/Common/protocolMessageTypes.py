@@ -33,6 +33,8 @@ class ProtocolMessageTypes(enum.Enum):
     tau_request = enum.auto()
     ue_context_release_command = enum.auto()
     ue_context_release_complete = enum.auto()
+    update_bearer_request = enum.auto()
+    update_bearer_response = enum.auto()
     update_location_request = enum.auto()
     update_location_response = enum.auto()
     esm_information_response = enum.auto()
